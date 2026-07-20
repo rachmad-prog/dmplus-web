@@ -1,6 +1,23 @@
 import { useEffect, useState } from "react";
 import { api } from "../../lib/api.js";
 
+const OPTIONS = [
+  {
+    value: "PAYMENT_GATEWAY",
+    icon: "💳",
+    title: "Payment Gateway",
+    desc: "Tombol paket mengarah ke halaman checkout — bayar via Midtrans (VA/e-wallet/kartu) atau transfer bank manual.",
+    previewDest: "Halaman Checkout",
+  },
+  {
+    value: "CTWA",
+    icon: "💬",
+    title: "CTWA (Click to WhatsApp)",
+    desc: "Tombol paket langsung membuka chat WhatsApp dengan pesan yang sudah terisi nama paket & harga. Cocok untuk iklan Click-to-WhatsApp.",
+    previewDest: "Chat WhatsApp",
+  },
+];
+
 export default function AdminPricingSettings() {
   const token = localStorage.getItem("admin_token");
   const [form, setForm] = useState({
@@ -9,6 +26,7 @@ export default function AdminPricingSettings() {
     ctwaMessage: "",
   });
   const [saved, setSaved] = useState(false);
+  const [saving, setSaving] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -23,12 +41,19 @@ export default function AdminPricingSettings() {
 
   async function submit(e) {
     e.preventDefault();
-    await api.updateSiteSettings(form, token);
-    setSaved(true);
-    setTimeout(() => setSaved(false), 2500);
+    setSaving(true);
+    try {
+      await api.updateSiteSettings(form, token);
+      setSaved(true);
+      setTimeout(() => setSaved(false), 2500);
+    } finally {
+      setSaving(false);
+    }
   }
 
   if (loading) return null;
+
+  const active = OPTIONS.find((o) => o.value === form.pricingMode) || OPTIONS[0];
 
   return (
     <div>
@@ -38,51 +63,52 @@ export default function AdminPricingSettings() {
         langsung untuk semua paket di halaman depan.
       </p>
 
-      <form className="card" style={{ maxWidth: 560 }} onSubmit={submit}>
+      <form className="card" style={{ maxWidth: 620 }} onSubmit={submit}>
+        <div className="mode-preview">
+          <span className="mode-preview-label">Preview</span>
+          <span className="mode-preview-btn">Ambil Paket Ini</span>
+          <span className="mode-preview-arrow">→</span>
+          <span className="mode-preview-dest">{active.previewDest}</span>
+        </div>
+
         <div className="form-group">
           <label>Mode Pricing Card</label>
-          <div style={{ display: "flex", flexDirection: "column", gap: 10, marginTop: 6 }}>
-            <label style={{ display: "flex", gap: 8, alignItems: "flex-start", cursor: "pointer", fontWeight: 400 }}>
-              <input
-                type="radio"
-                name="pricingMode"
-                checked={form.pricingMode === "PAYMENT_GATEWAY"}
-                onChange={() => setForm({ ...form, pricingMode: "PAYMENT_GATEWAY" })}
-                style={{ marginTop: 3 }}
-              />
-              <span>
-                <b>Payment Gateway</b>
-                <br />
-                <span style={{ fontSize: 13, color: "var(--ink-soft)" }}>
-                  Tombol paket mengarah ke halaman checkout — bayar via Midtrans (VA/e-wallet/kartu)
-                  atau transfer bank manual.
-                </span>
-              </span>
-            </label>
-
-            <label style={{ display: "flex", gap: 8, alignItems: "flex-start", cursor: "pointer", fontWeight: 400 }}>
-              <input
-                type="radio"
-                name="pricingMode"
-                checked={form.pricingMode === "CTWA"}
-                onChange={() => setForm({ ...form, pricingMode: "CTWA" })}
-                style={{ marginTop: 3 }}
-              />
-              <span>
-                <b>CTWA (Click to WhatsApp)</b>
-                <br />
-                <span style={{ fontSize: 13, color: "var(--ink-soft)" }}>
-                  Tombol paket langsung membuka chat WhatsApp dengan pesan yang sudah terisi nama
-                  paket & harga. Cocok untuk iklan Click-to-WhatsApp.
-                </span>
-              </span>
-            </label>
+          <div className="mode-options">
+            {OPTIONS.map((opt) => {
+              const isSelected = form.pricingMode === opt.value;
+              return (
+                <div
+                  key={opt.value}
+                  className={`mode-option ${isSelected ? "selected" : ""}`}
+                  onClick={() => setForm({ ...form, pricingMode: opt.value })}
+                  role="radio"
+                  aria-checked={isSelected}
+                  tabIndex={0}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      setForm({ ...form, pricingMode: opt.value });
+                    }
+                  }}
+                >
+                  <span className="mode-option-icon">{opt.icon}</span>
+                  <span className="mode-option-body">
+                    <span className="mode-option-title-row">
+                      <span className="mode-option-title">{opt.title}</span>
+                      {isSelected && <span className="mode-option-tag">Aktif</span>}
+                    </span>
+                    <span className="mode-option-desc">{opt.desc}</span>
+                  </span>
+                  <span className="mode-option-radio" />
+                </div>
+              );
+            })}
           </div>
         </div>
 
         {form.pricingMode === "CTWA" && (
-          <>
-            <div className="form-group">
+          <div className="mode-ctwa-fields">
+            <div className="form-group" style={{ marginBottom: 14 }}>
               <label>Nomor WhatsApp CTWA (opsional)</label>
               <input
                 value={form.ctwaWhatsapp}
@@ -90,7 +116,7 @@ export default function AdminPricingSettings() {
                 placeholder="contoh: 628111848185 (kosongkan = pakai nomor WA default)"
               />
             </div>
-            <div className="form-group">
+            <div className="form-group" style={{ marginBottom: 0 }}>
               <label>Template Pesan WhatsApp (opsional)</label>
               <textarea
                 rows={3}
@@ -102,11 +128,15 @@ export default function AdminPricingSettings() {
                 Gunakan <code>{"{paket}"}</code> dan <code>{"{harga}"}</code> untuk isi otomatis nama paket & harga.
               </span>
             </div>
-          </>
+          </div>
         )}
 
-        <button className="btn btn-primary">Simpan</button>
-        {saved && <span style={{ marginLeft: 12, color: "var(--moss-dark)" }}>✓ Tersimpan</span>}
+        <div className="mode-save-row">
+          <button className="btn btn-primary" disabled={saving}>
+            {saving ? "Menyimpan…" : "Simpan"}
+          </button>
+          {saved && <span className="mode-saved-toast">✓ Tersimpan</span>}
+        </div>
       </form>
     </div>
   );
