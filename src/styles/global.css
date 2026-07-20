@@ -259,7 +259,13 @@ table.admin-table th { color: var(--ink-soft); font-weight: 600; font-size: 12.5
   .hero h1 { font-size: 32px; }
 
   /* Admin sidebar becomes a collapsible top bar on mobile */
-  .admin-sidebar { padding: 0; }
+  .admin-sidebar {
+    padding: 0;
+    position: sticky;
+    top: 0;
+    z-index: 45;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.12);
+  }
   .admin-sidebar-top { display: flex; padding: 14px 18px; }
   .admin-brand { margin-bottom: 0; font-size: 17px; }
   .admin-menu-toggle { display: flex; }
