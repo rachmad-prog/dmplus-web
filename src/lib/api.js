@@ -34,6 +34,7 @@ export const api = {
 
   adminLogin: (body) => request("/admin/login", { method: "POST", body }),
   adminMe: (token) => request("/admin/me", { token }),
+  getAdminCaptcha: () => request("/admin/captcha"),
 
   getPixels: () => request("/pixels"),
   updatePixels: (body, token) => request("/pixels", { method: "PUT", body, token }),
