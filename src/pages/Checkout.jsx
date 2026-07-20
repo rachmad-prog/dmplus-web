@@ -20,6 +20,10 @@ export default function Checkout() {
   const [order, setOrder] = useState(null);
   const [bankInfo, setBankInfo] = useState(null);
   const [method, setMethod] = useState(null); // null = belum pilih
+  const [paymentSettings, setPaymentSettings] = useState({
+    enableBankTransfer: true,
+    enableMidtrans: true,
+  });
   const [senderName, setSenderName] = useState("");
   const [paymentLink, setPaymentLink] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -37,6 +41,25 @@ export default function Checkout() {
   useEffect(() => {
     api.getService(slug).then(setService).catch(() => setError("Paket tidak ditemukan"));
   }, [slug]);
+
+  useEffect(() => {
+    api.getSiteSettings()
+      .then((data) => {
+        const settings = {
+          enableBankTransfer: data.enableBankTransfer ?? true,
+          enableMidtrans: data.enableMidtrans ?? true,
+        };
+        setPaymentSettings(settings);
+        // Kalau cuma satu metode yang aktif, langsung pilih otomatis
+        // (tidak perlu customer klik radio pilihan).
+        if (settings.enableBankTransfer && !settings.enableMidtrans) {
+          setMethod("BANK_TRANSFER");
+        } else if (!settings.enableBankTransfer && settings.enableMidtrans) {
+          setMethod("MIDTRANS");
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   useEffect(() => {
     if (document.getElementById("midtrans-snap")) return;
@@ -211,14 +234,18 @@ export default function Checkout() {
               </div>
             ) : (
               <>
-            {/* Opsi: Transfer Bank */}
+            {/* Opsi: Transfer Bank — hanya tampil kalau diaktifkan admin */}
+            {paymentSettings.enableBankTransfer && (
             <div
               className={`payment-option ${method === "BANK_TRANSFER" ? "selected" : ""}`}
               onClick={() => setMethod("BANK_TRANSFER")}
             >
               <span>🏦 Transfer Bank Manual (Mandiri)</span>
-              <input type="radio" checked={method === "BANK_TRANSFER"} readOnly />
+              {paymentSettings.enableMidtrans && (
+                <input type="radio" checked={method === "BANK_TRANSFER"} readOnly />
+              )}
             </div>
+            )}
 
             {method === "BANK_TRANSFER" && bankInfo && (
               <div style={{ background: "#f6f3ea", borderRadius: 10, padding: "14px 16px", marginBottom: 12, fontSize: 14, lineHeight: 1.8 }}>
@@ -236,14 +263,18 @@ export default function Checkout() {
               </div>
             )}
 
-            {/* Opsi: Midtrans */}
+            {/* Opsi: Midtrans — hanya tampil kalau diaktifkan admin */}
+            {paymentSettings.enableMidtrans && (
             <div
               className={`payment-option ${method === "MIDTRANS" ? "selected" : ""}`}
               onClick={() => setMethod("MIDTRANS")}
             >
               <span>💳 Bayar Otomatis (VA / E-wallet / Kartu — Midtrans)</span>
-              <input type="radio" checked={method === "MIDTRANS"} readOnly />
+              {paymentSettings.enableBankTransfer && (
+                <input type="radio" checked={method === "MIDTRANS"} readOnly />
+              )}
             </div>
+            )}
 
             {method === "MIDTRANS" && (
               <div style={{ background: "#f6f3ea", borderRadius: 10, padding: "14px 16px", marginBottom: 12, fontSize: 14, lineHeight: 1.7 }}>
