@@ -50,8 +50,22 @@ export default function Checkout() {
   // Hanya simpan order ke DB, belum kirim notif apapun
   async function submitForm(e) {
     e.preventDefault();
-    setLoading(true);
     setError("");
+
+    if (!form.customerName.trim()) {
+      setError("Nama lengkap wajib diisi");
+      return;
+    }
+    if (!form.customerEmail.trim() || !/^\S+@\S+\.\S+$/.test(form.customerEmail)) {
+      setError("Email wajib diisi dengan format yang benar");
+      return;
+    }
+    if (!form.customerPhone.trim()) {
+      setError("No. WhatsApp wajib diisi");
+      return;
+    }
+
+    setLoading(true);
     try {
       const data = await api.createOrder({ serviceSlug: slug, ...form });
       setOrder(data.order);
@@ -118,18 +132,18 @@ export default function Checkout() {
 
         {/* ===== STEP 1: Form data diri ===== */}
         {step === "form" && (
-          <form className="card" onSubmit={submitForm}>
+          <form className="card" onSubmit={submitForm} noValidate>
             <div className="form-group">
               <label>Nama Lengkap</label>
-              <input required value={form.customerName} onChange={(e) => setForm({ ...form, customerName: e.target.value })} />
+              <input value={form.customerName} onChange={(e) => setForm({ ...form, customerName: e.target.value })} />
             </div>
             <div className="form-group">
               <label>Email</label>
-              <input type="email" required value={form.customerEmail} onChange={(e) => setForm({ ...form, customerEmail: e.target.value })} />
+              <input value={form.customerEmail} onChange={(e) => setForm({ ...form, customerEmail: e.target.value })} />
             </div>
             <div className="form-group">
               <label>No. WhatsApp</label>
-              <input required placeholder="08xxxxxxxxxx" value={form.customerPhone} onChange={(e) => setForm({ ...form, customerPhone: e.target.value })} />
+              <input placeholder="08xxxxxxxxxx" value={form.customerPhone} onChange={(e) => setForm({ ...form, customerPhone: e.target.value })} />
             </div>
             <div className="form-group">
               <label>Nama Bisnis (opsional)</label>
