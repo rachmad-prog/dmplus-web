@@ -14,9 +14,13 @@ export default function AdminLayout() {
       navigate("/admin/login");
       return;
     }
-    api.adminMe(token)
+    api
+      .adminMe(token)
       .then((data) => setAdmin(data.admin))
-      .catch(() => { localStorage.removeItem("admin_token"); navigate("/admin/login"); })
+      .catch(() => {
+        localStorage.removeItem("admin_token");
+        navigate("/admin/login");
+      })
       .finally(() => setChecked(true));
   }, [navigate]);
 
@@ -31,25 +35,40 @@ export default function AdminLayout() {
     <div className="admin-shell">
       <aside className="admin-sidebar">
         <div className="admin-sidebar-top">
-          <div className="admin-brand">web.studio</div>
+          <div className="admin-brand">dmplus-web</div>
           <button
             className="admin-menu-toggle"
             onClick={() => setMenuOpen((o) => !o)}
             aria-label="Buka menu"
-            aria-expanded={menuOpen}
-          >
+            aria-expanded={menuOpen}>
             {menuOpen ? "✕" : "☰"}
           </button>
         </div>
         <nav className={`admin-nav ${menuOpen ? "open" : ""}`}>
-          <NavLink to="/admin" end onClick={() => setMenuOpen(false)}>📦 Orders</NavLink>
-          <NavLink to="/admin/services" onClick={() => setMenuOpen(false)}>🧩 Setting Layanan</NavLink>
-          <NavLink to="/admin/bank" onClick={() => setMenuOpen(false)}>🏦 Rekening Bank</NavLink>
-          <NavLink to="/admin/pixels" onClick={() => setMenuOpen(false)}>🎯 Pixel Ads</NavLink>
-          <NavLink to="/admin/pricing" onClick={() => setMenuOpen(false)}>💳 Mode Pricing</NavLink>
-          <NavLink to="/admin/payment-methods" onClick={() => setMenuOpen(false)}>🔀 Metode Pembayaran</NavLink>
+          <NavLink to="/admin" end onClick={() => setMenuOpen(false)}>
+            📦 Orders
+          </NavLink>
+          <NavLink to="/admin/services" onClick={() => setMenuOpen(false)}>
+            🧩 Setting Layanan
+          </NavLink>
+          <NavLink to="/admin/bank" onClick={() => setMenuOpen(false)}>
+            🏦 Rekening Bank
+          </NavLink>
+          <NavLink to="/admin/pixels" onClick={() => setMenuOpen(false)}>
+            🎯 Pixel Ads
+          </NavLink>
+          <NavLink to="/admin/pricing" onClick={() => setMenuOpen(false)}>
+            💳 Mode Pricing
+          </NavLink>
+          <NavLink
+            to="/admin/payment-methods"
+            onClick={() => setMenuOpen(false)}>
+            🔀 Metode Pembayaran
+          </NavLink>
           <div className="admin-email">{admin?.email}</div>
-          <button className="btn btn-ghost btn-block admin-logout" onClick={logout}>
+          <button
+            className="btn btn-ghost btn-block admin-logout"
+            onClick={logout}>
             Keluar
           </button>
         </nav>
