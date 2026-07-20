@@ -34,6 +34,9 @@ export const api = {
 
   getPixels: () => request("/pixels"),
   updatePixels: (body, token) => request("/pixels", { method: "PUT", body, token }),
+
+  getBankSettings: (token) => request("/bank-settings", { token }),
+  updateBankSettings: (body, token) => request("/bank-settings", { method: "PUT", body, token }),
 };
 
 export function formatRupiah(n) {

@@ -43,6 +43,7 @@ export default function AdminLayout() {
         </div>
         <nav className={`admin-nav ${menuOpen ? "open" : ""}`}>
           <NavLink to="/admin" end onClick={() => setMenuOpen(false)}>📦 Orders</NavLink>
+          <NavLink to="/admin/bank" onClick={() => setMenuOpen(false)}>🏦 Rekening Bank</NavLink>
           <NavLink to="/admin/pixels" onClick={() => setMenuOpen(false)}>🎯 Pixel Ads</NavLink>
           <div className="admin-email">{admin?.email}</div>
           <button className="btn btn-ghost btn-block admin-logout" onClick={logout}>

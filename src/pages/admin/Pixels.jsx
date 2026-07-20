@@ -41,6 +41,12 @@ export default function AdminPixels() {
         ID pixel di bawah akan otomatis disuntikkan ke seluruh halaman website untuk keperluan
         tracking & retargeting Meta Ads, Google Ads, dan TikTok Ads.
       </p>
+      <p style={{ marginTop: -10, marginBottom: 20, fontSize: 13.5, color: "var(--ink-soft)" }}>
+        ℹ️ Event <b>PageView</b> otomatis terkirim di setiap halaman begitu ID di bawah diisi —
+        tidak perlu setting tambahan. Event <b>AddToCart</b> otomatis terkirim saat pengunjung
+        klik "Ambil Paket Ini", dan event <b>Purchase</b> otomatis terkirim saat pengunjung
+        klik tombol bayar di halaman checkout.
+      </p>
 
       <form className="card" style={{ maxWidth: 520 }} onSubmit={submit}>
         <div className="form-group">

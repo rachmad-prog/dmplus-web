@@ -1,8 +1,18 @@
 import { Link } from "react-router-dom";
 import { formatRupiah } from "../lib/api.js";
+import { trackEvent } from "../lib/injectPixels.js";
 
 export default function PricingCard({ service }) {
   const savePct = Math.round((1 - service.priceFinal / service.priceOriginal) * 100);
+
+  function handleSelect() {
+    trackEvent("AddToCart", {
+      content_name: service.name,
+      content_ids: [service.slug],
+      value: service.priceFinal,
+      currency: "IDR",
+    });
+  }
 
   return (
     <div className={`price-card ${service.isPopular ? "popular" : ""}`}>
@@ -26,7 +36,7 @@ export default function PricingCard({ service }) {
         <li><span className="check">⚡</span><span>Selesai {service.workingDays}</span></li>
       </ul>
 
-      <Link to={`/checkout/${service.slug}`} className={`btn btn-block ${service.isPopular ? "btn-amber" : "btn-primary"}`}>
+      <Link to={`/checkout/${service.slug}`} onClick={handleSelect} className={`btn btn-block ${service.isPopular ? "btn-amber" : "btn-primary"}`}>
         Ambil Paket Ini
       </Link>
     </div>

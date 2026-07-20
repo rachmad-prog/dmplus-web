@@ -101,9 +101,20 @@ export default function Checkout() {
         });
         setResult(data);
         setStep("done");
+        trackEvent("Purchase", {
+          value: order.totalAmount,
+          currency: "IDR",
+          content_name: service?.name,
+          method: "bank_transfer",
+        });
       } else {
         const data = await api.createPayment({ orderId: order.id, method: "MIDTRANS" });
-        trackEvent("InitiateCheckout", { value: order.totalAmount, currency: "IDR" });
+        trackEvent("Purchase", {
+          value: order.totalAmount,
+          currency: "IDR",
+          content_name: service?.name,
+          method: "midtrans",
+        });
         setPaymentLink(data.redirectUrl);
       }
     } catch (err) {
