@@ -50,12 +50,12 @@ export default function AdminOrders() {
             <tbody>
               {orders.map((o) => (
                 <tr key={o.id}>
-                  <td>{o.invoiceNumber}</td>
-                  <td>{o.service.name}<br /><small>{o.service.subtitle}</small></td>
-                  <td>{o.customerName}<br /><small>{o.customerEmail} · {o.customerPhone}</small></td>
-                  <td>{formatRupiah(o.totalAmount)}</td>
-                  <td><span className={`badge ${BADGE[o.status] || ""}`}>{o.status}</span></td>
-                  <td>
+                  <td data-label="Invoice">{o.invoiceNumber}</td>
+                  <td data-label="Paket">{o.service.name}<br /><small>{o.service.subtitle}</small></td>
+                  <td data-label="Customer">{o.customerName}<br /><small>{o.customerEmail} · {o.customerPhone}</small></td>
+                  <td data-label="Total">{formatRupiah(o.totalAmount)}</td>
+                  <td data-label="Status"><span className={`badge ${BADGE[o.status] || ""}`}>{o.status}</span></td>
+                  <td data-label="Pembayaran">
                     {o.payments.length === 0 && "—"}
                     {o.payments.map((p) => (
                       <div key={p.id} style={{ marginBottom: 6 }}>

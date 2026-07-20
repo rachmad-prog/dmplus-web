@@ -6,6 +6,7 @@ export default function AdminLayout() {
   const navigate = useNavigate();
   const [admin, setAdmin] = useState(null);
   const [checked, setChecked] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem("admin_token");
@@ -29,13 +30,25 @@ export default function AdminLayout() {
   return (
     <div className="admin-shell">
       <aside className="admin-sidebar">
-        <div style={{ fontWeight: 700, fontSize: 18, marginBottom: 24 }}>web.studio</div>
-        <NavLink to="/admin" end>📦 Orders</NavLink>
-        <NavLink to="/admin/pixels">🎯 Pixel Ads</NavLink>
-        <div style={{ marginTop: 24, fontSize: 13, opacity: 0.7 }}>{admin?.email}</div>
-        <button className="btn btn-ghost btn-block" style={{ marginTop: 12, color: "#fff", borderColor: "rgba(255,255,255,0.3)" }} onClick={logout}>
-          Keluar
-        </button>
+        <div className="admin-sidebar-top">
+          <div className="admin-brand">web.studio</div>
+          <button
+            className="admin-menu-toggle"
+            onClick={() => setMenuOpen((o) => !o)}
+            aria-label="Buka menu"
+            aria-expanded={menuOpen}
+          >
+            {menuOpen ? "✕" : "☰"}
+          </button>
+        </div>
+        <nav className={`admin-nav ${menuOpen ? "open" : ""}`}>
+          <NavLink to="/admin" end onClick={() => setMenuOpen(false)}>📦 Orders</NavLink>
+          <NavLink to="/admin/pixels" onClick={() => setMenuOpen(false)}>🎯 Pixel Ads</NavLink>
+          <div className="admin-email">{admin?.email}</div>
+          <button className="btn btn-ghost btn-block admin-logout" onClick={logout}>
+            Keluar
+          </button>
+        </nav>
       </aside>
       <main className="admin-main">
         <Outlet />

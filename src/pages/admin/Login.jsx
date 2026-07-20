@@ -25,8 +25,8 @@ export default function AdminLogin() {
   }
 
   return (
-    <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "var(--moss-dark)" }}>
-      <form className="card" style={{ width: 360 }} onSubmit={submit}>
+    <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "var(--moss-dark)", padding: "20px" }}>
+      <form className="card" style={{ width: "100%", maxWidth: 360 }} onSubmit={submit}>
         <h2 style={{ fontSize: 22 }}>Admin Login</h2>
         <div className="form-group">
           <label>Email</label>
