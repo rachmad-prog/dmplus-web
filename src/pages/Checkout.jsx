@@ -26,6 +26,7 @@ export default function Checkout() {
     enableMidtrans: true,
   });
   const [senderName, setSenderName] = useState("");
+  const [copied, setCopied] = useState(false);
   const [paymentLink, setPaymentLink] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -153,6 +154,29 @@ export default function Checkout() {
     }
   }
 
+  async function copyAccountNumber(accountNumber) {
+    try {
+      await navigator.clipboard.writeText(accountNumber);
+    } catch (err) {
+      // Fallback untuk browser yang tidak support clipboard API
+      const textarea = document.createElement("textarea");
+      textarea.value = accountNumber;
+      textarea.style.position = "fixed";
+      textarea.style.opacity = "0";
+      document.body.appendChild(textarea);
+      textarea.focus();
+      textarea.select();
+      try {
+        document.execCommand("copy");
+      } catch (e) {
+        // ignore
+      }
+      document.body.removeChild(textarea);
+    }
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  }
+
   function waConfirmUrl() {
     if (!order) return "#";
     const text = `Halo, saya sudah transfer pembayaran sebesar ${formatRupiah(order.totalAmount)} untuk invoice ${order.invoiceNumber} atas nama ${order.customerName}. Mohon dikonfirmasi. Terima kasih!`;
@@ -256,7 +280,40 @@ export default function Checkout() {
             {method === "BANK_TRANSFER" && bankInfo && (
               <div style={{ background: "#f6f3ea", borderRadius: 10, padding: "14px 16px", marginBottom: 12, fontSize: 14, lineHeight: 1.8 }}>
                 <div>Transfer ke <b>{bankInfo.bankName}</b> a.n. <b>{bankInfo.accountHolder}</b></div>
-                <div>No. Rekening: <b>{bankInfo.accountNumber}</b></div>
+                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                  <span>No. Rekening: <b>{bankInfo.accountNumber}</b></span>
+                  <button
+                    type="button"
+                    onClick={() => copyAccountNumber(bankInfo.accountNumber)}
+                    title="Salin nomor rekening"
+                    style={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: 4,
+                      background: copied ? "#2d6a4f" : "#eee7d3",
+                      color: copied ? "#fff" : "#333",
+                      border: "none",
+                      borderRadius: 6,
+                      padding: "3px 8px",
+                      fontSize: 12,
+                      fontWeight: 600,
+                      cursor: "pointer",
+                      lineHeight: 1.4,
+                    }}
+                  >
+                    {copied ? (
+                      <>✓ Tersalin</>
+                    ) : (
+                      <>
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                        </svg>
+                        Salin
+                      </>
+                    )}
+                  </button>
+                </div>
                 <div>Nominal: <b style={{ color: "#2d6a4f" }}>{formatRupiah(order.totalAmount)}</b></div>
                 <div className="form-group" style={{ marginTop: 10, marginBottom: 8 }}>
                   <label>Nama Pengirim Transfer</label>
