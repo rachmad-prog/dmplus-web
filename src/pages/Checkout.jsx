@@ -4,6 +4,7 @@ import Navbar from "../components/Navbar.jsx";
 import Footer from "../components/Footer.jsx";
 import { api, formatRupiah } from "../lib/api.js";
 import { trackEvent } from "../lib/injectPixels.js";
+import { useDocumentMeta } from "../lib/useDocumentMeta.js";
 
 const MIDTRANS_CLIENT_KEY = import.meta.env.VITE_MIDTRANS_CLIENT_KEY || "";
 const MIDTRANS_SNAP_URL = import.meta.env.VITE_MIDTRANS_IS_PRODUCTION === "true"
@@ -41,6 +42,11 @@ export default function Checkout() {
   useEffect(() => {
     api.getService(slug).then(setService).catch(() => setError("Paket tidak ditemukan"));
   }, [slug]);
+
+  useDocumentMeta(
+    service ? `Checkout — ${service.name} | DM Plus` : "Checkout | DM Plus",
+    service ? `Selesaikan pembayaran untuk paket ${service.name} (${service.subtitle}) — ${formatRupiah(service.priceFinal)}.` : undefined
+  );
 
   useEffect(() => {
     api.getSiteSettings()

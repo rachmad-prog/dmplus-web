@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import Navbar from "../components/Navbar.jsx";
 import Footer from "../components/Footer.jsx";
 import { api, formatRupiah } from "../lib/api.js";
+import { useDocumentMeta } from "../lib/useDocumentMeta.js";
 
 const STATUS_LABEL = {
   NEW: "Order baru",
@@ -25,6 +26,11 @@ export default function OrderStatus() {
   useEffect(() => {
     api.getOrder(invoiceNumber).then(setOrder).catch((e) => setError(e.message));
   }, [invoiceNumber]);
+
+  useDocumentMeta(
+    `Status Order ${invoiceNumber} | DM Plus`,
+    `Cek status pembayaran dan pengerjaan untuk invoice ${invoiceNumber}.`
+  );
 
   if (error) return <div className="container section">{error}</div>;
   if (!order) return null;
