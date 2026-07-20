@@ -35,10 +35,6 @@ export default function Footer() {
           <a href="/admin/login" style={{ opacity: 0.6 }}>Admin</a>
         </div>
       </footer>
-
-      <a href={waLink} target="_blank" rel="noreferrer" className="wa-float" aria-label="Chat WhatsApp">
-        💬
-      </a>
     </>
   );
 }
