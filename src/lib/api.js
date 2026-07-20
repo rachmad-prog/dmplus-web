@@ -1,6 +1,4 @@
-const BASE_URL =
-  import.meta.env.VITE_API_URL || "https://api-dmplus-web.vercel.app/api";
-// const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:4000/api";
+const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:4000/api";
 
 async function request(path, { method = "GET", body, token } = {}) {
   const headers = { "Content-Type": "application/json" };
@@ -22,23 +20,20 @@ async function request(path, { method = "GET", body, token } = {}) {
 export const api = {
   getServices: () => request("/services"),
   getService: (slug) => request(`/services/${slug}`),
-  updateService: (id, body, token) =>
-    request(`/services/${id}`, { method: "PUT", body, token }),
+  updateService: (id, body, token) => request(`/services/${id}`, { method: "PUT", body, token }),
 
   createOrder: (body) => request("/orders", { method: "POST", body }),
   getOrder: (invoiceNumber) => request(`/orders/${invoiceNumber}`),
   getAllOrders: (token) => request("/orders", { token }),
 
   createPayment: (body) => request("/payments", { method: "POST", body }),
-  verifyPayment: (paymentId, token) =>
-    request(`/payments/${paymentId}/verify`, { method: "POST", token }),
+  verifyPayment: (paymentId, token) => request(`/payments/${paymentId}/verify`, { method: "POST", token }),
 
   adminLogin: (body) => request("/admin/login", { method: "POST", body }),
   adminMe: (token) => request("/admin/me", { token }),
 
   getPixels: () => request("/pixels"),
-  updatePixels: (body, token) =>
-    request("/pixels", { method: "PUT", body, token }),
+  updatePixels: (body, token) => request("/pixels", { method: "PUT", body, token }),
 };
 
 export function formatRupiah(n) {
