@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /checkout/
+Disallow: /status/
+Disallow: /admin/
+
+Sitemap: https://dmplus-web.vercel.app/sitemap.xml
