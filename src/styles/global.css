@@ -101,12 +101,30 @@ ul { padding: 0; margin: 0; list-style: none; }
 }
 .navbar-inner { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 16px 24px; max-width: 1120px; margin: 0 auto; }
 .brand { flex-shrink: 0; font-family: var(--font-display); font-weight: 700; font-size: 22px; color: var(--moss-dark); }
-.nav-links { display: flex; gap: 28px; font-weight: 500; font-size: 15px; flex-shrink: 0; }
+.nav-links { display: flex; align-items: center; gap: 28px; font-weight: 500; font-size: 15px; flex-shrink: 0; margin-left: auto; margin-right: 28px; }
 .nav-links a:hover { color: var(--moss); }
 .navbar-inner .btn { flex-shrink: 0; white-space: nowrap; }
+.nav-cta-mobile { display: none; }
+.nav-toggle {
+  display: none; align-items: center; justify-content: center;
+  width: 40px; height: 40px; border-radius: 8px; flex-shrink: 0;
+  background: transparent; border: 1px solid var(--line); color: var(--ink);
+  font-size: 18px; cursor: pointer; line-height: 1;
+}
 
 @media (max-width: 760px) {
-  .nav-links { display: none; }
+  .navbar-inner { flex-wrap: wrap; }
+  .nav-cta-desktop { display: none; }
+  .nav-toggle { display: flex; margin-left: auto; }
+  .nav-links {
+    display: none;
+    flex-direction: column; align-items: stretch; gap: 4px;
+    width: 100%; margin: 14px 0 0;
+    order: 3;
+  }
+  .nav-links.open { display: flex; }
+  .nav-links a { padding: 10px 4px; border-bottom: 1px solid var(--line); }
+  .nav-cta-mobile { display: flex; margin-top: 8px; }
 }
 
 /* ===== Hero ===== */
@@ -198,9 +216,17 @@ ul { padding: 0; margin: 0; list-style: none; }
 }
 .payment-option.selected { border-color: var(--moss); background: rgba(31,77,58,0.05); }
 
-table.admin-table { width: 100%; border-collapse: collapse; font-size: 14px; }
-table.admin-table th, table.admin-table td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--line); }
+table.admin-table { width: 100%; min-width: 640px; border-collapse: collapse; font-size: 14px; }
+table.admin-table th, table.admin-table td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--line); vertical-align: top; white-space: nowrap; }
+table.admin-table td:nth-child(2), table.admin-table td:nth-child(3), table.admin-table td:nth-child(6) { white-space: normal; }
 table.admin-table th { color: var(--ink-soft); font-weight: 600; font-size: 12.5px; text-transform: uppercase; letter-spacing: 0.03em; }
+
+.admin-table-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: 0 -28px;
+  padding: 0 28px;
+}
 
 .badge { display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; }
 .badge-new { background: #e8e3d5; color: #63594a; }
@@ -246,23 +272,22 @@ table.admin-table th { color: var(--ink-soft); font-weight: 600; font-size: 12.5
   .admin-main { padding: 20px 16px; }
 }
 
+.admin-scroll-hint {
+  display: none;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--ink-soft);
+  margin-bottom: 8px;
+}
+.admin-scroll-hint svg { width: 14px; height: 14px; animation: admin-scroll-bounce 1.4s ease-in-out infinite; }
+@keyframes admin-scroll-bounce {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(4px); }
+}
+
 @media (max-width: 700px) {
-  /* Orders table -> stacked cards on small screens */
-  .admin-table thead { display: none; }
-  .admin-table, .admin-table tbody, .admin-table tr, .admin-table td { display: block; width: 100%; }
-  .admin-table tr {
-    border: 1px solid var(--line); border-radius: 10px; margin-bottom: 14px;
-    padding: 12px 14px; background: #fff;
-  }
-  .admin-table td {
-    border-bottom: 1px dashed var(--line); padding: 8px 0;
-    display: flex; justify-content: space-between; align-items: flex-start;
-    gap: 12px; text-align: right;
-  }
-  .admin-table td:last-child { border-bottom: none; }
-  .admin-table td::before {
-    content: attr(data-label); font-weight: 600; color: var(--ink-soft);
-    font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.03em;
-    text-align: left; flex-shrink: 0;
-  }
+  /* Orders table stays a real table but scrolls horizontally, with a scroll hint */
+  .admin-table-scroll { margin: 0 -16px; padding: 0 16px 4px; }
+  .admin-scroll-hint { display: flex; }
 }
