@@ -289,7 +289,7 @@ export default function Home() {
                 <span>{f.q}</span>
                 <span>{openFaq === i ? "–" : "+"}</span>
               </div>
-              {openFaq === i && <div className="faq-a">{f.a}</div>}
+              <div className="faq-a" hidden={openFaq !== i}>{f.a}</div>
             </div>
           ))}
         </div>
