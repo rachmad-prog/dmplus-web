@@ -109,6 +109,7 @@ const FAQS = [
 export default function Home() {
   const [services, setServices] = useState(DEFAULT_SERVICES);
   const [openFaq, setOpenFaq] = useState(null);
+  const [siteSettings, setSiteSettings] = useState({ pricingMode: "PAYMENT_GATEWAY" });
 
   useEffect(() => {
     api
@@ -120,6 +121,13 @@ export default function Home() {
       })
       .catch((err) => {
         console.warn("Gagal mengambil data paket dari API, menampilkan paket default:", err);
+      });
+
+    api
+      .getSiteSettings()
+      .then((data) => setSiteSettings(data))
+      .catch((err) => {
+        console.warn("Gagal mengambil pengaturan pricing dari API, memakai mode default:", err);
       });
   }, []);
 
@@ -238,7 +246,13 @@ export default function Home() {
           <p>Harga spesial periode 1 tahun — slot terbatas.</p>
           <div className="pricing-grid">
             {services.map((s) => (
-              <PricingCard key={s.id} service={s} />
+              <PricingCard
+                key={s.id}
+                service={s}
+                pricingMode={siteSettings.pricingMode}
+                ctwaWhatsapp={siteSettings.ctwaWhatsapp}
+                ctwaMessage={siteSettings.ctwaMessage}
+              />
             ))}
           </div>
           <p style={{ marginTop: 22, fontSize: 13, textAlign: "center" }}>

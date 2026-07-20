@@ -8,6 +8,7 @@ import AdminLayout from "./pages/admin/Layout.jsx";
 import AdminOrders from "./pages/admin/Orders.jsx";
 import AdminBankSettings from "./pages/admin/BankSettings.jsx";
 import AdminPixels from "./pages/admin/Pixels.jsx";
+import AdminPricingSettings from "./pages/admin/PricingSettings.jsx";
 import NotFound from "./pages/NotFound.jsx";
 import { api } from "./lib/api.js";
 import { injectPixels } from "./lib/injectPixels.js";
@@ -28,6 +29,7 @@ export default function App() {
         <Route index element={<AdminOrders />} />
         <Route path="bank" element={<AdminBankSettings />} />
         <Route path="pixels" element={<AdminPixels />} />
+        <Route path="pricing" element={<AdminPricingSettings />} />
       </Route>
 
       <Route path="*" element={<NotFound />} />

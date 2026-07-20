@@ -37,6 +37,9 @@ export const api = {
 
   getBankSettings: (token) => request("/bank-settings", { token }),
   updateBankSettings: (body, token) => request("/bank-settings", { method: "PUT", body, token }),
+
+  getSiteSettings: () => request("/site-settings"),
+  updateSiteSettings: (body, token) => request("/site-settings", { method: "PUT", body, token }),
 };
 
 export function formatRupiah(n) {

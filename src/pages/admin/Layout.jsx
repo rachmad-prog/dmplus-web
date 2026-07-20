@@ -45,6 +45,7 @@ export default function AdminLayout() {
           <NavLink to="/admin" end onClick={() => setMenuOpen(false)}>📦 Orders</NavLink>
           <NavLink to="/admin/bank" onClick={() => setMenuOpen(false)}>🏦 Rekening Bank</NavLink>
           <NavLink to="/admin/pixels" onClick={() => setMenuOpen(false)}>🎯 Pixel Ads</NavLink>
+          <NavLink to="/admin/pricing" onClick={() => setMenuOpen(false)}>💳 Mode Pricing</NavLink>
           <div className="admin-email">{admin?.email}</div>
           <button className="btn btn-ghost btn-block admin-logout" onClick={logout}>
             Keluar
