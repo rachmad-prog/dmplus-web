@@ -7,6 +7,7 @@ import AdminLogin from "./pages/admin/Login.jsx";
 import AdminLayout from "./pages/admin/Layout.jsx";
 import AdminOrders from "./pages/admin/Orders.jsx";
 import AdminBankSettings from "./pages/admin/BankSettings.jsx";
+import AdminServices from "./pages/admin/Services.jsx";
 import AdminPixels from "./pages/admin/Pixels.jsx";
 import AdminPricingSettings from "./pages/admin/PricingSettings.jsx";
 import NotFound from "./pages/NotFound.jsx";
@@ -27,6 +28,7 @@ export default function App() {
       <Route path="/admin/login" element={<AdminLogin />} />
       <Route path="/admin" element={<AdminLayout />}>
         <Route index element={<AdminOrders />} />
+        <Route path="services" element={<AdminServices />} />
         <Route path="bank" element={<AdminBankSettings />} />
         <Route path="pixels" element={<AdminPixels />} />
         <Route path="pricing" element={<AdminPricingSettings />} />

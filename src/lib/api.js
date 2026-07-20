@@ -20,7 +20,10 @@ async function request(path, { method = "GET", body, token } = {}) {
 export const api = {
   getServices: () => request("/services"),
   getService: (slug) => request(`/services/${slug}`),
+  getAdminServices: (token) => request("/services/admin/all", { token }),
+  createService: (body, token) => request("/services", { method: "POST", body, token }),
   updateService: (id, body, token) => request(`/services/${id}`, { method: "PUT", body, token }),
+  deleteService: (id, token) => request(`/services/${id}`, { method: "DELETE", token }),
 
   createOrder: (body) => request("/orders", { method: "POST", body }),
   getOrder: (invoiceNumber) => request(`/orders/${invoiceNumber}`),
