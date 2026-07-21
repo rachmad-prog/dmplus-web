@@ -305,7 +305,7 @@ export default function AdminUsers() {
               <input type="email" required value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} placeholder="email@domain.com" />
             </FieldGroup>
             <FieldGroup label="Password (min. 8 karakter)">
-              <input type="password" required minLength={8} value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} placeholder="Buat password kuat" />
+              <input type="password" required value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} placeholder="Buat password kuat" />
             </FieldGroup>
             <FieldGroup label="Role">
               <select value={form.role} onChange={(e) => setForm({ ...form, role: e.target.value })}>
@@ -339,7 +339,7 @@ export default function AdminUsers() {
               </select>
             </FieldGroup>
             <FieldGroup label="Password baru (kosongkan jika tidak ingin mengubah)">
-              <input type="password" minLength={8} value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} placeholder="Isi untuk mengganti password" />
+              <input type="password" value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} placeholder="Isi untuk mengganti password" />
             </FieldGroup>
             <FormError msg={formError} />
             <div style={{ display: "flex", gap: 8, marginTop: 4 }}>
@@ -358,10 +358,10 @@ export default function AdminUsers() {
           </p>
           <form onSubmit={handleResetPw}>
             <FieldGroup label="Password baru (min. 8 karakter)">
-              <input type="password" required minLength={8} value={pw.newPassword} onChange={(e) => setPw({ ...pw, newPassword: e.target.value })} placeholder="Password baru" />
+              <input type="password" required value={pw.newPassword} onChange={(e) => setPw({ ...pw, newPassword: e.target.value })} placeholder="Password baru" />
             </FieldGroup>
             <FieldGroup label="Konfirmasi password baru">
-              <input type="password" required minLength={8} value={pw.confirmPassword} onChange={(e) => setPw({ ...pw, confirmPassword: e.target.value })} placeholder="Ulangi password baru" />
+              <input type="password" required value={pw.confirmPassword} onChange={(e) => setPw({ ...pw, confirmPassword: e.target.value })} placeholder="Ulangi password baru" />
             </FieldGroup>
             <FormError msg={formError} />
             <FormSuccess msg={formSuccess} />
@@ -381,10 +381,10 @@ export default function AdminUsers() {
               <input type="password" required value={pw.currentPassword} onChange={(e) => setPw({ ...pw, currentPassword: e.target.value })} placeholder="Password yang sedang dipakai" />
             </FieldGroup>
             <FieldGroup label="Password baru (min. 8 karakter)">
-              <input type="password" required minLength={8} value={pw.newPassword} onChange={(e) => setPw({ ...pw, newPassword: e.target.value })} placeholder="Password baru" />
+              <input type="password" required value={pw.newPassword} onChange={(e) => setPw({ ...pw, newPassword: e.target.value })} placeholder="Password baru" />
             </FieldGroup>
             <FieldGroup label="Konfirmasi password baru">
-              <input type="password" required minLength={8} value={pw.confirmPassword} onChange={(e) => setPw({ ...pw, confirmPassword: e.target.value })} placeholder="Ulangi password baru" />
+              <input type="password" required value={pw.confirmPassword} onChange={(e) => setPw({ ...pw, confirmPassword: e.target.value })} placeholder="Ulangi password baru" />
             </FieldGroup>
             <FormError msg={formError} />
             <FormSuccess msg={formSuccess} />
