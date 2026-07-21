@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { api, formatRupiah } from "../../lib/api.js";
+import { useAdminRole } from "../../lib/useAdminRole.js";
 
 const EMPTY_FORM = {
   slug: "",
@@ -33,6 +34,7 @@ function serviceToForm(s) {
 
 export default function AdminServices() {
   const token = localStorage.getItem("admin_token");
+  const { isDemo } = useAdminRole();
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
   const [editingId, setEditingId] = useState(null); // null = tidak ada form, "new" = form tambah
@@ -125,7 +127,7 @@ export default function AdminServices() {
         Kelola paket layanan yang tampil di halaman depan — nama, harga, fitur, dan status aktif.
       </p>
 
-      {!isFormOpen && (
+      {!isFormOpen && !isDemo && (
         <button className="btn btn-primary" style={{ marginBottom: 20 }} onClick={openNew}>
           + Tambah Paket
         </button>
@@ -305,21 +307,25 @@ export default function AdminServices() {
                       </span>
                     </td>
                     <td>
-                      <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
-                        <button className="btn btn-ghost" style={{ padding: "4px 10px", fontSize: 12 }} onClick={() => openEdit(s)}>
-                          Edit
-                        </button>
-                        <button className="btn btn-ghost" style={{ padding: "4px 10px", fontSize: 12 }} onClick={() => toggleActive(s)}>
-                          {s.isActive ? "Nonaktifkan" : "Aktifkan"}
-                        </button>
-                        <button
-                          className="btn btn-ghost"
-                          style={{ padding: "4px 10px", fontSize: 12, color: "#b3261e" }}
-                          onClick={() => remove(s)}
-                        >
-                          Hapus
-                        </button>
-                      </div>
+                      {isDemo ? (
+                        <span style={{ fontSize: 12, color: "var(--ink-soft)" }}>—</span>
+                      ) : (
+                        <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+                          <button className="btn btn-ghost" style={{ padding: "4px 10px", fontSize: 12 }} onClick={() => openEdit(s)}>
+                            Edit
+                          </button>
+                          <button className="btn btn-ghost" style={{ padding: "4px 10px", fontSize: 12 }} onClick={() => toggleActive(s)}>
+                            {s.isActive ? "Nonaktifkan" : "Aktifkan"}
+                          </button>
+                          <button
+                            className="btn btn-ghost"
+                            style={{ padding: "4px 10px", fontSize: 12, color: "#b3261e" }}
+                            onClick={() => remove(s)}
+                          >
+                            Hapus
+                          </button>
+                        </div>
+                      )}
                     </td>
                   </tr>
                 ))}

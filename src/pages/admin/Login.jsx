@@ -51,6 +51,7 @@ export default function AdminLogin() {
         captcha: { ...captcha, answer: captchaAnswer },
       });
       localStorage.setItem("admin_token", data.token);
+      localStorage.setItem("admin_role", data.admin.role || "ADMIN");
       navigate("/admin");
     } catch (err) {
       setError(err.message);

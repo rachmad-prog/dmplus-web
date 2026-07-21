@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { api, formatRupiah } from "../../lib/api.js";
+import { useAdminRole } from "../../lib/useAdminRole.js";
 
 const BADGE = {
   NEW: "badge-new",
@@ -13,6 +14,7 @@ export default function AdminOrders() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const token = localStorage.getItem("admin_token");
+  const { isDemo } = useAdminRole();
 
   function load() {
     setLoading(true);
@@ -69,7 +71,7 @@ export default function AdminOrders() {
                           <div key={p.id} style={{ marginBottom: 6 }}>
                             {p.method === "MIDTRANS" ? "Midtrans" : "Transfer Bank"} · {formatRupiah(p.amount)} ·{" "}
                             <span className={`badge ${p.status === "PAID" ? "badge-paid" : "badge-pending"}`}>{p.status}</span>
-                            {p.method === "BANK_TRANSFER" && p.status === "PENDING" && (
+                            {p.method === "BANK_TRANSFER" && p.status === "PENDING" && !isDemo && (
                               <button className="btn btn-primary" style={{ padding: "4px 10px", fontSize: 12, marginLeft: 8 }} onClick={() => verify(p.id)}>
                                 Verifikasi
                               </button>

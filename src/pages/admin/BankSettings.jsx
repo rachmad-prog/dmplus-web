@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { api } from "../../lib/api.js";
+import { useAdminRole } from "../../lib/useAdminRole.js";
 
 export default function AdminBankSettings() {
   const token = localStorage.getItem("admin_token");
+  const { isDemo } = useAdminRole();
   const [form, setForm] = useState({
     bankName: "",
     accountNumber: "",
@@ -51,7 +53,11 @@ export default function AdminBankSettings() {
           <label>Nama Pemilik Rekening</label>
           <input value={form.accountHolder} onChange={(e) => setForm({ ...form, accountHolder: e.target.value })} placeholder="contoh: PT Web Studio Indonesia" />
         </div>
-        <button className="btn btn-primary">Simpan</button>
+        {isDemo ? (
+          <p style={{ color: "var(--ink-soft)", fontSize: 13 }}>👁️ Mode demo — tidak dapat menyimpan perubahan.</p>
+        ) : (
+          <button className="btn btn-primary">Simpan</button>
+        )}
         {saved && <span style={{ marginLeft: 12, color: "var(--moss-dark)" }}>✓ Tersimpan</span>}
       </form>
     </div>

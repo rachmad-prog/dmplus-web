@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { api } from "../../lib/api.js";
+import { useAdminRole } from "../../lib/useAdminRole.js";
 
 export default function AdminPaymentMethods() {
   const token = localStorage.getItem("admin_token");
+  const { isDemo } = useAdminRole();
   const [form, setForm] = useState({
     enableBankTransfer: true,
     enableMidtrans: true,
@@ -78,7 +80,7 @@ export default function AdminPaymentMethods() {
               type="button"
               className={`pm-switch ${form.enableBankTransfer ? "on" : ""}`}
               onClick={() => toggle("enableBankTransfer")}
-              disabled={saving}
+              disabled={saving || isDemo}
               aria-label="Aktifkan/nonaktifkan Transfer Bank Manual"
             />
           </div>
@@ -101,13 +103,14 @@ export default function AdminPaymentMethods() {
               type="button"
               className={`pm-switch ${form.enableMidtrans ? "on" : ""}`}
               onClick={() => toggle("enableMidtrans")}
-              disabled={saving}
+              disabled={saving || isDemo}
               aria-label="Aktifkan/nonaktifkan Midtrans"
             />
           </div>
         </div>
 
         {error && <div className="pm-warning" style={{ marginTop: 14 }}>{error}</div>}
+        {isDemo && <p style={{ fontSize: 13, color: "var(--ink-soft)", marginTop: 12 }}>👁️ Mode demo — tidak dapat mengubah pengaturan.</p>}
 
         <div className="mode-save-row" style={{ marginTop: 16 }}>
           {saving && <span style={{ fontSize: 13.5, color: "var(--ink-soft)" }}>Menyimpan…</span>}

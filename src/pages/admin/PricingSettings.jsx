@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { api } from "../../lib/api.js";
+import { useAdminRole } from "../../lib/useAdminRole.js";
 
 const OPTIONS = [
   {
@@ -20,6 +21,7 @@ const OPTIONS = [
 
 export default function AdminPricingSettings() {
   const token = localStorage.getItem("admin_token");
+  const { isDemo } = useAdminRole();
   const [form, setForm] = useState({
     pricingMode: "PAYMENT_GATEWAY",
     ctwaWhatsapp: "",
@@ -132,10 +134,16 @@ export default function AdminPricingSettings() {
         )}
 
         <div className="mode-save-row">
-          <button className="btn btn-primary" disabled={saving}>
-            {saving ? "Menyimpan…" : "Simpan"}
-          </button>
-          {saved && <span className="mode-saved-toast">✓ Tersimpan</span>}
+          {isDemo ? (
+            <p style={{ color: "var(--ink-soft)", fontSize: 13 }}>👁️ Mode demo — tidak dapat menyimpan perubahan.</p>
+          ) : (
+            <>
+              <button className="btn btn-primary" disabled={saving}>
+                {saving ? "Menyimpan…" : "Simpan"}
+              </button>
+              {saved && <span className="mode-saved-toast">✓ Tersimpan</span>}
+            </>
+          )}
         </div>
       </form>
     </div>

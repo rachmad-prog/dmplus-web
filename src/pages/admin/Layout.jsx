@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { api } from "../../lib/api.js";
+import { useAdminRole } from "../../lib/useAdminRole.js";
 
 export default function AdminLayout() {
   const navigate = useNavigate();
   const [admin, setAdmin] = useState(null);
   const [checked, setChecked] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const { isDemo } = useAdminRole();
 
   useEffect(() => {
     const token = localStorage.getItem("admin_token");
@@ -22,6 +24,7 @@ export default function AdminLayout() {
 
   function logout() {
     localStorage.removeItem("admin_token");
+    localStorage.removeItem("admin_role");
     navigate("/admin/login");
   }
 
@@ -49,6 +52,21 @@ export default function AdminLayout() {
           <NavLink to="/admin/pricing" onClick={() => setMenuOpen(false)}>💳 Mode Pricing</NavLink>
           <NavLink to="/admin/payment-methods" onClick={() => setMenuOpen(false)}>🔀 Metode Pembayaran</NavLink>
           <div className="admin-email">{admin?.email}</div>
+          {isDemo && (
+            <div style={{
+              background: "#fff3cd",
+              border: "1px solid #ffc107",
+              borderRadius: 6,
+              padding: "6px 10px",
+              fontSize: 12,
+              color: "#856404",
+              margin: "6px 0",
+              lineHeight: 1.4,
+            }}>
+              👁️ <strong>Mode Demo</strong><br />
+              Hanya bisa melihat data, tidak bisa edit atau hapus.
+            </div>
+          )}
           <button className="btn btn-ghost btn-block admin-logout" onClick={logout}>
             Keluar
           </button>

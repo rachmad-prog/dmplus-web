@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { api } from "../../lib/api.js";
+import { useAdminRole } from "../../lib/useAdminRole.js";
 
 export default function AdminPixels() {
   const token = localStorage.getItem("admin_token");
+  const { isDemo } = useAdminRole();
   const [form, setForm] = useState({
     metaPixelId: "",
     googleAdsId: "",
@@ -69,8 +71,14 @@ export default function AdminPixels() {
           <label>Google Tag Manager Container ID (opsional)</label>
           <input value={form.gtmContainerId} onChange={(e) => setForm({ ...form, gtmContainerId: e.target.value })} placeholder="contoh: GTM-XXXXXXX" />
         </div>
-        <button className="btn btn-primary">Simpan</button>
-        {saved && <span style={{ marginLeft: 12, color: "var(--moss-dark)" }}>✓ Tersimpan</span>}
+        {isDemo ? (
+          <p style={{ color: "var(--ink-soft)", fontSize: 13 }}>👁️ Mode demo — tidak dapat menyimpan perubahan.</p>
+        ) : (
+          <>
+            <button className="btn btn-primary">Simpan</button>
+            {saved && <span style={{ marginLeft: 12, color: "var(--moss-dark)" }}>✓ Tersimpan</span>}
+          </>
+        )}
       </form>
     </div>
   );
