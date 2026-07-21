@@ -51,6 +51,7 @@ export default function AdminLayout() {
           <NavLink to="/admin/pixels" onClick={() => setMenuOpen(false)}>🎯 Pixel Ads</NavLink>
           <NavLink to="/admin/pricing" onClick={() => setMenuOpen(false)}>💳 Mode Pricing</NavLink>
           <NavLink to="/admin/payment-methods" onClick={() => setMenuOpen(false)}>🔀 Metode Pembayaran</NavLink>
+          <NavLink to="/admin/users" onClick={() => setMenuOpen(false)}>👤 Manajemen User</NavLink>
           <div className="admin-email">{admin?.email}</div>
           {isDemo && (
             <div style={{

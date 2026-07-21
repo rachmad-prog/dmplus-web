@@ -11,6 +11,7 @@ import AdminServices from "./pages/admin/Services.jsx";
 import AdminPixels from "./pages/admin/Pixels.jsx";
 import AdminPricingSettings from "./pages/admin/PricingSettings.jsx";
 import AdminPaymentMethods from "./pages/admin/PaymentMethods.jsx";
+import AdminUsers from "./pages/admin/Users.jsx";
 import NotFound from "./pages/NotFound.jsx";
 import { api } from "./lib/api.js";
 import { injectPixels } from "./lib/injectPixels.js";
@@ -34,6 +35,7 @@ export default function App() {
         <Route path="pixels" element={<AdminPixels />} />
         <Route path="pricing" element={<AdminPricingSettings />} />
         <Route path="payment-methods" element={<AdminPaymentMethods />} />
+        <Route path="users" element={<AdminUsers />} />
       </Route>
 
       <Route path="*" element={<NotFound />} />

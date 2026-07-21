@@ -36,6 +36,13 @@ export const api = {
   adminMe: (token) => request("/admin/me", { token }),
   getAdminCaptcha: () => request("/admin/captcha"),
 
+  // User management
+  getAdminUsers: (token) => request("/admin/users", { token }),
+  createAdminUser: (body, token) => request("/admin/users", { method: "POST", body, token }),
+  updateAdminUser: (id, body, token) => request(`/admin/users/${id}`, { method: "PUT", body, token }),
+  deleteAdminUser: (id, token) => request(`/admin/users/${id}`, { method: "DELETE", token }),
+  changePassword: (body, token) => request("/admin/change-password", { method: "POST", body, token }),
+
   getPixels: () => request("/pixels"),
   updatePixels: (body, token) => request("/pixels", { method: "PUT", body, token }),
 
