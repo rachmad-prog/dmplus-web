@@ -40,6 +40,24 @@ function Modal({ title, onClose, children }) {
   );
 }
 
+// ─── Helper components (di luar AdminUsers agar tidak re-mount saat render) ───
+function FieldGroup({ label, children }) {
+  return (
+    <div className="form-group">
+      <label>{label}</label>
+      {children}
+    </div>
+  );
+}
+
+function FormError({ msg }) {
+  return msg ? <p style={{ color: "#b3261e", marginBottom: 12, fontSize: 13.5 }}>{msg}</p> : null;
+}
+
+function FormSuccess({ msg }) {
+  return msg ? <p style={{ color: "var(--moss-dark)", marginBottom: 12, fontSize: 13.5 }}>✓ {msg}</p> : null;
+}
+
 // ─── Main Page ────────────────────────────────────────────────────────────────
 export default function AdminUsers() {
   const token = localStorage.getItem("admin_token");
@@ -174,24 +192,6 @@ export default function AdminUsers() {
       await api.deleteAdminUser(user.id, token);
       load();
     } catch (err) { alert(err.message); }
-  }
-
-  // ─── Render helpers ──────────────────────────────────────────────────────────
-
-  function FieldGroup({ label, children }) {
-    return (
-      <div className="form-group">
-        <label>{label}</label>
-        {children}
-      </div>
-    );
-  }
-
-  function FormError({ msg }) {
-    return msg ? <p style={{ color: "#b3261e", marginBottom: 12, fontSize: 13.5 }}>{msg}</p> : null;
-  }
-  function FormSuccess({ msg }) {
-    return msg ? <p style={{ color: "var(--moss-dark)", marginBottom: 12, fontSize: 13.5 }}>✓ {msg}</p> : null;
   }
 
   // ─── Main render ─────────────────────────────────────────────────────────────
