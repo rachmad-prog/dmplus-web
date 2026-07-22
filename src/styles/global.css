@@ -362,7 +362,7 @@ table.admin-table th { color: var(--ink-soft); font-weight: 600; font-size: 12.5
 @media (max-width: 880px) {
   .hero-grid, .problem-grid, .feature-grid, .pricing-grid, .testi-grid, .steps-grid, .includes-list, .footer-grid { grid-template-columns: 1fr; }
   .price-card.popular { transform: none; }
-  .admin-shell { grid-template-columns: 1fr; }
+  .admin-shell { grid-template-columns: 1fr; grid-template-rows: auto 1fr; align-content: start; }
   .hero h1 { font-size: 32px; }
 
   /* Admin sidebar becomes a collapsible top bar on mobile */
